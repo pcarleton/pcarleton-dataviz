@@ -9,7 +9,7 @@ I've made several "moon phase emoji" mini projects, starting with a [moon CLI to
 There's three approaches I've found:
 1. Anchoring on a known new moon and extrapolating based on mean lunation (29.52 days)
 2. Fetching source-of-truth data from an API (either live, or prefetching some window)
-3. Calculating a more complex approximation using [Astronmical Algorithms](https://www.amazon.co.uk/Astronomical-Algorithms-Jean-Meeus/dp/0943396611)
+3. Calculating a more complex approximation using [Astronmical Algorithms](https://www.amazon.co.uk/Astronomical-Algorithms-Jean-Meeus/dp/0943396611) (See [next post](/moon-phases-with-meeus))
 
 For the most recent application for the Password Game, I wanted to produce the same emoji as the game expected.  This motivated me to check just how close my simple model was to the real deal (USNO data).
 
@@ -21,7 +21,7 @@ import * as luxon from "npm:luxon";
 ```
 
 ```js echo
-function getPhaseChar(cur_lun = lunForDate(), buffer = 0.03) {
+function getPhaseChar(cur_lun = lunForDate(), buffer = 0.025) {
   // We could min/max here, but more likely passing in a different value means a bug somewhere else in the code.
   if (cur_lun > 1 || cur_lun < 0) { throw new Error("Lunation progress must be between 0 and 1") }
   // drop the lowest range to line 0 up with new moon, and since we're already clipping our range at 0.

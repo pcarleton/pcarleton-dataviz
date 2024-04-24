@@ -1,6 +1,31 @@
 
 import * as luxon from "npm:luxon";
 
+
+export const MEAN_LUNATION = 29.530588;
+
+
+export function simplePhaseChar(cur_lun = lunForDate(), buffer = 0.025) {
+  // We could min/max here, but more likely passing in a different value means a bug somewhere else in the code.
+  if (cur_lun > 1 || cur_lun < 0) { throw new Error("Lunation progress must be between 0 and 1") }
+  // drop the lowest range to line 0 up with new moon, and since we're already clipping our range at 0.
+  const ranges = [0, 0.25, 0.5, 0.75, 1].map(val => [val - buffer, val + buffer]).flat().slice(1);
+  const emojis = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘', '🌑'];
+
+  return emojis[ranges.findIndex(range => cur_lun < range)];
+}
+
+export function simpleLunForDate(d = new Date()) {
+  // Take difference (in days) between target and 2000/01/06 18:14 UTC (an arbitrary new moon time),
+  // then divide the difference by the average number of days for a full lunation.
+  // The fractional part is how far along the current lunation the target date is.
+  const lun0 = new Date(947182440000);
+//   const lun0 = new Date(1641148380000);
+  const diffDays = (d - lun0) / 86400000;
+  const meanLunation = 29.530588;
+  return (diffDays / meanLunation) % 1;
+};
+
 // 49.1: JDE Julian Ephemeris Days (in Dynamical Time).
 // k is an integer corresponding to the new moon.
 // adding .25, 0.5, 0.75 gives the primary phases.
