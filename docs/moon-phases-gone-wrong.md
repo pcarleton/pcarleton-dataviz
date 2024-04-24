@@ -4,14 +4,14 @@ title: Moon Phases Gone Wrong
 
 # Moon Phases Gone Wrong
 
-I've made several "moon phase emoji" mini projects, starting with a moon CLI tool, then a favicon that updates, and the most recently a copy-pastable version for The Password Game. I find it's a simple problem to get a passable answer which makes it a quick fun project in a new language or a new context. On the other hand, it's incredibly complex to get an extremely accurate answer.
+I've made several "moon phase emoji" mini projects, starting with a [moon CLI tool](https://blog.pcarleton.com/post/cli-for-the-moon/), then [a favicon](https://garden.pcarleton.com/post/garden-fun/#emoji-favicon), and the most recently [a copy-pastable version](https://blog.pcarleton.com/post/current-phase-of-the-moon-emoji/) for The Password Game. I find it's a simple problem to get a passable answer which makes it a quick fun project in a new language or a new context. On the other hand, it's incredibly complex to get an extremely accurate answer.
 
 There's three approaches I've found:
 1. Anchoring on a known new moon and extrapolating based on mean lunation (29.52 days)
-2. Using accurate data, via live querying the USNO API or embedding pre-queried data
-3. Calculating a more complex approximation using Astronmical Algorithms
+2. Fetching source-of-truth data from an API (either live, or prefetching some window)
+3. Calculating a more complex approximation using [Astronmical Algorithms](https://www.amazon.co.uk/Astronomical-Algorithms-Jean-Meeus/dp/0943396611)
 
-For the most recent application for the Password Game, I needed to be able to produce the same emoji as the game expected for the same day.  This motivated me to check just how close my simple model (1) was to the real deal (USNO data).
+For the most recent application for the Password Game, I wanted to produce the same emoji as the game expected.  This motivated me to check just how close my simple model was to the real deal (USNO data).
 
 ## The Code
 
