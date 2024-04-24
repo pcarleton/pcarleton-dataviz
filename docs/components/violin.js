@@ -16,7 +16,7 @@ const kde = (kernel, thds) => V => thds.map(t => [t, d3.mean(V, d => kernel(t - 
 const epanechnikov = bandwidth => x =>
   Math.abs((x /= bandwidth)) <= 1 ? (0.75 * (1 - x * x)) / bandwidth : 0;
 
-export const calculateDensities = (groups, {bandwidth = 0}) => {
+export const calculateDensities = (groups, {bandwidth = 0} = {}) => {
     const a = [];
     groups.map((d, i) => {
       const raw = d.points.sort((a, b) => a - b);
