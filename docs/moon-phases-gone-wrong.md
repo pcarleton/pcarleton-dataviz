@@ -4,7 +4,7 @@ title: Moon Phases Gone Wrong
 
 # Moon Phases Gone Wrong
 
-I've made several "moon phase emoji" mini projects, starting with a [moon CLI tool](https://blog.pcarleton.com/post/cli-for-the-moon/), then [a favicon](https://garden.pcarleton.com/post/garden-fun/#emoji-favicon), and the most recently [a copy-pastable version](https://blog.pcarleton.com/post/current-phase-of-the-moon-emoji/) for The Password Game. I find it's a simple problem to get a passable answer which makes it a quick fun project in a new language or a new context. On the other hand, it's incredibly complex to get an extremely accurate answer.
+I've made several "moon phase emoji" mini projects, starting with a [moon CLI tool](https://blog.pcarleton.com/post/cli-for-the-moon/), then [a favicon](https://garden.pcarleton.com/post/garden-fun/#emoji-favicon), and the most recently [a copy-pastable version](https://blog.pcarleton.com/post/current-phase-of-the-moon-emoji/) for [The Password Game](https://neal.fun/password-game/). I find it's a simple problem to get a passable answer which makes it a quick fun project in a new language or a new context. On the other hand, it's incredibly complex to get an extremely accurate answer.
 
 There's three approaches I've found:
 1. Anchoring on a known new moon and extrapolating based on mean lunation (29.52 days)
