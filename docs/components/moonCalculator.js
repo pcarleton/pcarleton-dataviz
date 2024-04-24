@@ -59,7 +59,7 @@ export function calculateJDEcorrected(k) {
   }
   
   // 49.2: k=0 corresponds to the new moon of 2000-01-06
-  function nearestK(luxonDate) {
+export  function nearestK(luxonDate) {
     const fractionalYear = luxonDate.year + (
       luxonDate.diff(luxonDate.startOf('year'), 'year')
     ).years
@@ -137,7 +137,13 @@ export const calculateCorrectionInputs = (k) => {
     return {...corrected, raw};
 }
 
-export const newMoonCorrections = ({M, Mprime, F, Omega, E}) => {
+
+export const newMoonCorrections = (cinputs) => {
+  return newMoonCorrectionsRaw(cinputs).reduce((a, b) => a + b);
+}
+
+
+export const newMoonCorrectionsRaw = ({M, Mprime, F, Omega, E}) => {
     const corrections = [
     -0.40720 * Math.sin(Mprime),
     +0.17241 * E * Math.sin(M),
@@ -165,13 +171,15 @@ export const newMoonCorrections = ({M, Mprime, F, Omega, E}) => {
     -0.00002 * Math.sin(3 * Mprime + M),
     +0.00002 * Math.sin(4 * Mprime)
     ];
-
-    return corrections.reduce((a, b) => a + b);
+    return corrections;
 }
 
 // FUll moon
-
 const fullMoonCorrections = ({M, Mprime, F, Omega, E}) => {
+    return fullMoonCorrectionsRaw({M, Mprime, F, Omega, E}).reduce((a, b) => a + b);
+}
+
+export const fullMoonCorrectionsRaw = ({M, Mprime, F, Omega, E}) => {
     const cs = [
         -0.40614 * Math.sin(Mprime),
         +0.17302 * E * Math.sin(M),
@@ -200,7 +208,7 @@ const fullMoonCorrections = ({M, Mprime, F, Omega, E}) => {
         +0.00002 * Math.sin(4 * Mprime)
       ];
 
-      return cs.reduce((a, b) => a + b);
+      return cs;
 }
 
 
