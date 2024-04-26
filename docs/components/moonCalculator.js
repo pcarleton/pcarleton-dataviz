@@ -38,22 +38,25 @@ export function calculateJDEcorrected(k) {
 
     // Only do new moon at the moment
     const correctionInputs = calculateCorrectionInputs(k);
-    const phaseNum = Math.floor((k % 1)*4);
-    if (phaseNum === 0) { // new moon
-      const correction = newMoonCorrections(correctionInputs);
-      JDE += correction;
-    } else if (phaseNum == 2) { // full moon
-      const correction = fullMoonCorrections(correctionInputs);
-      JDE += correction;
-    } else if (phaseNum == 1) { // first quarter
-      const correction = quarterCorrections(correctionInputs);
-      const quarterOnly = quarterSpecific(correctionInputs);
-      JDE += correction + quarterOnly;
-    } else if (phaseNum == 3) { // last quarter
-      const correction = quarterCorrections(correctionInputs);
-      const quarterOnly = quarterSpecific(correctionInputs);
-      JDE += correction - quarterOnly;
-    }
+
+    const phaseCorrections = calculateCorrections(k, correctionInputs);
+    JDE += phaseCorrections.reduce((a, b) => a + b);
+    // const phaseNum = Math.floor((k % 1)*4);
+    // if (phaseNum === 0) { // new moon
+    //   const correction = newMoonCorrections(correctionInputs);
+    //   JDE += correction;
+    // } else if (phaseNum == 2) { // full moon
+    //   const correction = fullMoonCorrections(correctionInputs);
+    //   JDE += correction;
+    // } else if (phaseNum == 1) { // first quarter
+    //   const correction = quarterCorrections(correctionInputs);
+    //   const quarterOnly = quarterSpecific(correctionInputs);
+    //   JDE += correction + quarterOnly;
+    // } else if (phaseNum == 3) { // last quarter
+    //   const correction = quarterCorrections(correctionInputs);
+    //   const quarterOnly = quarterSpecific(correctionInputs);
+    //   JDE += correction - quarterOnly;
+    // }
     
     return JDE + planetaryCorrections(k);
   }
@@ -79,6 +82,25 @@ export  function nearestK(luxonDate) {
 // 49.3: T is time in Julian centuries since epoch 2000
 function calculateT(k) {
     return k / 1236.85;
+}
+
+export const calculateCorrections = (k, correctionInputs) => {
+  const phaseNum = Math.floor((k % 1)*4);
+  if (phaseNum === 0) { // new moon
+    return newMoonCorrectionsRaw(correctionInputs);
+  } else if (phaseNum == 2) { // full moon
+    return fullMoonCorrectionsRaw(correctionInputs);
+  } else if (phaseNum == 1) { // first quarter
+    const correction = quarterCorrections(correctionInputs);
+    const quarterOnly = quarterSpecific(correctionInputs);
+    return correction.concat(quarterOnly);
+  } else if (phaseNum == 3) { // last quarter
+    const correction = quarterCorrections(correctionInputs);
+    // Flip quarter only corrections
+    const quarterOnly = quarterSpecific(correctionInputs).map(d => -d);
+    return correction.concat(quarterOnly);
+  }
+  return [];
 }
 
 export const calculateCorrectionInputs = (k) => {
@@ -213,12 +235,12 @@ export const fullMoonCorrectionsRaw = ({M, Mprime, F, Omega, E}) => {
 
 
 const quarterSpecific = ({M, Mprime, F, Omega, E}) => {
-  return 0.00306 
-    - 0.00038 * E * Math.cos(M)
-    + 0.00026 * Math.cos(Mprime)
-    - 0.00002 * Math.cos(Mprime - M)
-    + 0.00002 * Math.cos(Mprime + M)
-    + 0.00002 * Math.cos(2*F);
+  return [0.00306, 
+    - 0.00038 * E * Math.cos(M),
+    + 0.00026 * Math.cos(Mprime),
+    - 0.00002 * Math.cos(Mprime - M),
+    + 0.00002 * Math.cos(Mprime + M),
+    + 0.00002 * Math.cos(2*F)];
 }
 
 const quarterCorrections = ({M, Mprime, F, Omega, E}) => {
@@ -250,7 +272,7 @@ const quarterCorrections = ({M, Mprime, F, Omega, E}) => {
       -0.00002 * Math.sin(3*Mprime + M),
     ];
 
-    return cs.reduce((a, b) => a + b);
+    return cs;
 }
 
 

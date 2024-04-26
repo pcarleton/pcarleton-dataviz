@@ -28,11 +28,19 @@ export const calculateDensities = (groups, {bandwidth = 0} = {}) => {
     return a;
 }
 
-export const violinPlot = (data, {gap = 0, bandwidth = 0} = {}) => {
+// Data is assumed to be in the shape:
+// [
+//   {points: [1, 2, ...], label: "a"},
+//   {points: [1.2, 3.4, ...], label: "b"},
+//   ...
+// ]
+export const violinPlot = (data, {gap = 0, bandwidth = 0, options = {}, marks = []} = {}) => {
     const densities = calculateDensities(data, {bandwidth});
     const r = gap;
+    marks = marks || [];
     return Plot.plot({
         // grid: true,
+        ...options,
         marks: [
           Plot.ruleY([0], { strokeOpacity: 0.6 }),
           Plot.areaX(densities, {
@@ -82,7 +90,8 @@ export const violinPlot = (data, {gap = 0, bandwidth = 0} = {}) => {
               z: "i",
               fx: "label",
             })
-          )
+          ),
+          ...marks
         ]
       });
 }
