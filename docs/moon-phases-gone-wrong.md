@@ -4,18 +4,18 @@ title: Moon Phases Gone Wrong
 
 # Moon Phases Gone Wrong
 
-I've made several "moon phase emoji" mini projects, starting with a [moon CLI tool](https://blog.pcarleton.com/post/cli-for-the-moon/), then [a favicon](https://garden.pcarleton.com/post/garden-fun/#emoji-favicon), and the most recently [a copy-pastable version](https://blog.pcarleton.com/post/current-phase-of-the-moon-emoji/) for [The Password Game](https://neal.fun/password-game/). I find it's a simple problem to get a passable answer which makes it a quick fun project in a new language or a new context. On the other hand, it's incredibly complex to get an extremely accurate answer.
+I've made several "moon phase emoji" mini projects, starting with a [moon CLI tool](https://blog.pcarleton.com/post/cli-for-the-moon/), then [a favicon](https://garden.pcarleton.com/post/garden-fun/#emoji-favicon), and the most recently [a copy-pastable version](https://blog.pcarleton.com/post/current-phase-of-the-moon-emoji/) for [The Password Game](https://neal.fun/password-game/). It's a simple problem to get a passable answer which makes it a quick fun project in a new language or a new context. On the other hand, it's very complex to get an extremely accurate answer.
 
 There's three approaches I've found:
 1. Anchoring on a known new moon and extrapolating based on mean lunation (29.52 days)
 2. Fetching source-of-truth data from an API (either live, or prefetching some window)
 3. Calculating a more complex approximation using [Astronmical Algorithms](https://www.amazon.co.uk/Astronomical-Algorithms-Jean-Meeus/dp/0943396611) (See [next post](/moon-phases-with-meeus))
 
-For the most recent application for the Password Game, I wanted to produce the same emoji as the game expected.  This motivated me to check just how close my simple model was to the real deal (USNO data).
+For the most recent application for the Password Game, I wanted to produce the same emoji as the game expected.  This motivated me to check just how close my simple model (approach #1) was to the real deal (USNO data i.e. approach #2).
 
 ## The Code
 
-Here's a (slightly cleaned up) version of the code I was using. It uses the average length of a lunation (i.e. time between new moons), and a reference new moon date to do some modulo arithmetic and spit out a moon phase emoji.  There's a "buffer" window surrounding the instantaneous phase. 
+Here's approach #1. It uses the average length of a lunation (i.e. time between new moons), and a reference new moon date to do some modulo arithmetic and spit out a moon phase emoji.  There's a "buffer" window surrounding the instantaneous phase. 
 ```js
 import * as luxon from "npm:luxon";
 ```
@@ -50,11 +50,11 @@ html`${getPhaseChar()}`
 ```
 
 ### What phase is it anyway?
-The tricky thing about moon phases is that the primary phases correspond to a particular point on the Moon's orbit, meaning the Moon occupies that space for an instant, and then is on to a secondary phase. For example, First Quarter corresponds to when the moon is 50% illuminated, which will only happen for a split second, after which it will be 50.0001% illuminated, and before it will be 49.9999% illuminated.  If I were to only count that instant as the primary phase, I'd never see the primary phase emoji since the odds that I check at exactly the moment of the primary phase are really small.
+The tricky thing about moon phases is that the primary phases (🌑, 🌗, 🌕, 🌗) are instantaneous. They correspond to a particular point on the Moon's orbit, meaning the Moon occupies that space for an instant, and then is on to a secondary phase (🌒,🌖,🌖,🌘). For example, First Quarter (🌗) corresponds to when the moon's geocentric longitude is 90° (roughly when the angle from Sun->Earth->Moon is 90°), which will only happen for a split second, after which it will be 90.0001° longitude, and before it will be 89.9999°.  If I were to only count that instant as the primary phase, I'd never see the primary phase emoji since the odds that I check at exactly the moment of the primary phase are really small.
 
-Additionally, since we're using the average lunation length, our estimate is going to not line up with reality, so even if I did ask at the exact right moment, it might not line up. It's like using the wrong number of significant digits in a science experiment.
+Additionally, since we're using the average lunation length, our estimate is going to not line up with reality, so even if I did ask at the exact right moment, it will have some significant error bars. It's like using the wrong number of significant digits in a science experiment.
 
-To make sure we get to see the primary phase emoji, and have the emoji more closely line up with what we can distinguish with our eyes, I want to add some leewy or buffer around the primary phases.
+To make sure we get to see the primary phase emoji, and have the emoji more closely line up with what we can distinguish with our eyes, I want to add some leeway or buffer around the primary phases.
 
 There are a few ways to approach this:
 * Some fixed "buffer" window before and after the primary phase that we still count it as the primary phase (my initial approach, I went with roughly ${tex`\pm 24 \text{ hours}`})
@@ -84,7 +84,7 @@ The not-as-nice thing about it is if we want to agree with another source about 
 
 Truncating by date means finding the date on which the primary phase occurs, and considering any timestamp on that date to be the primary phase. This is handy for things like "Moon Phase Calendar" such as moonphases.co.uk where people ask "What phase is the moon this week?" and the answer is picking 1 phase per day. (Footnote: there are some interesting other ways to look at this such as if I'm asking and the moon hasn't risen yet, should I return the phase the moon _will_ be when it rises?).
 
-Truncation behaves weirdly around midnight. A full moon at 12:01 am on March 21st implies that March 20th is a waxing gibbous, and March 21st is the full moon. Observationally, I'd likely consider March 20th a full moon. This could be based on the illumination, but also on the rise/set times which are close to sunrise/sunset for a full moon.
+Truncation behaves weirdly around midnight. A full moon at 12:01 am on March 21st implies that March 20th is a waxing gibbous, and March 21st is the full moon. Observationally, I'd consider March 20th a full moon. This could be based on the illumination, but also on the rise/set times which are close to sunrise/sunset for a full moon.
 
 The midnight issue makes truncation more sensitive to drift in our calculation of the moment of the primary phase. With the buffer window, we're always a little wrong, so we make it wide enough to be practical. But with a fixed 24h window, and the "anchor point" not centered, it means if we're off by 8 hours, and then truncate, we're even worse than a 12:01am full moon.
 
@@ -145,11 +145,6 @@ const lunationPicker = view(Inputs.range([0, estimated2023PhaseDates.length-1], 
 ```js
 display(dateMoonView(estimated2023PhaseDates[lunationPicker]));
 ```
-
-To highlight the date truncation approach, I'll start with [, then truncate on day boundaries, and show how that differs from the buffer approach on the same diagram.
-
-
-
 
 <!-- ```js
 display(lunPhases[lunationPicker]);
@@ -263,7 +258,7 @@ display(fullMoonMean/24)
 
 // display(fullMoon);
 ```
-From this plot, I'd expect that determining new moons should be relatively accurate ( ${tex`\pm 5 \text{ hours}`} ), but getting the right intermediate phases is going to be tricky for both the the variation above ( ${tex`\pm 20 \text{ hours}`} ) and the date truncation issue.
+From this plot, I'd expect that determining new moons should be relatively accurate since the true data doesn't vary that much ( ${tex`\pm 5 \text{ hours}`} ), but getting the right intermediate phases is going to be tricky for both the the variation above ( ${tex`\pm 20 \text{ hours}`} ) and the date truncation issue.
 
 
 ## Absolute accuracy for 2023
