@@ -114,7 +114,7 @@ display(Plot.plot({
 
 ## Corrections over time
 
-Let's see what these corrections look like over time.  Below are 50 lunations corrections for full moon and new moon plotted
+Let's see what these corrections look like over time.  Below are those same 50 lunations corrections plotted over time
 
 ```js
 
@@ -135,7 +135,7 @@ display(Plot.plot({
 }))
 ```
 
-It's clear that the first 2 terms dominate at least for Full moon and New moon. It's also interesting to note that for term 1,  the corrections move similarly for all phases (the golden line), but for term 0, the adjustments per phase are very different depending on the anomaly.  This is more clear if you scroll back up to see the individual corrections for a selected lunation.
+It's clear that the first 2 terms dominate. It's also interesting to note that for term 1,  the corrections move similarly for all phases (the golden line), but for term 0, the adjustments per phase are very differently (the blue line).  This is more clear if you scroll back up to see the individual corrections for a selected lunation and see all gold bars moving up and down together, but blue bars being positive or negative depending on the phase.
 
 ### Dominating Terms
 
@@ -220,8 +220,14 @@ display(Plot.plot({
 
 If we plot them, we see that the Moon's mean anomaly oscillates much more quickly since it's orbiting on average once every 29.5 days, meanwhile the Sun "orbits" the earth once per year.  Put it in "heliocentric" terms, it takes a year between the Earth starting at its closest point and then travelling back to that same point.
 
-A neat fun fact is that the Earth is closest to the sun in January which is in the winter (Northen Hemisphere). It's funny because the most often incorrect answer folks give about why winter is colder is related to distance to the sun, but the distance is reverse what it would be if that were the case (we're closer in winter, and further in summer).
+This explains what we saw earlier with the term1 (Sun's mean anomaly) moving together across all phases, but the Moon's mean anomaly not. This is because the Sun's mean anomaly doesn't change as much over the course of a single lunation, but the Moon's mean anomaly goes through its full 0° to 360° cycle.
+
 
 ## Conclusion
 
 Taking this "black box" approach makes it clear that the 2 most influential pieces are the Moon's relative distance from pergiee and the Earth's relative distance from its perihelion points in that order. I'd like to get a better intution about what direction (sooner or later) these 2 mean anomalies push the phases.  But I'll tackle that in another post!
+
+
+# Bonus
+
+A neat fun fact from the Mean Anomaly chart is that the Earth is closest to the sun in January which is in the winter (Northen Hemisphere). It's funny because the most often incorrect answer folks give about why winter is colder is related to distance to the sun, but the distance is reverse what it would be if that were the case (we're closer in winter, and further in summer).
