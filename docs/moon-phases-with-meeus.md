@@ -1,8 +1,8 @@
 ---
-title: Moon Phases with Meeus
+title: Moon Phases Part 2, Introducing Meeus
 ---
 
-# Moon Phases with Meeus
+# Moon Phases Part 2, Introducing Meeus
 
 In the last post, I was investigating the accuracy of a super simple moon phase calculation. It was "good enough" in most situations given when to declare a primary phase is a bit subjective.  A similar date truncation approach chose the same calendar day phase as the USNO data >90% of the time. 
 

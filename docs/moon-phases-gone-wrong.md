@@ -1,8 +1,8 @@
 ---
-title: Moon Phases Gone Wrong
+title: Moon Phases Part 1, Limits of a simple approach
 ---
 
-# Moon Phases Gone Wrong
+# Moon Phases Part 1, Limits of a simple approach
 
 I've made several "moon phase emoji" mini projects, starting with a [moon CLI tool](https://blog.pcarleton.com/post/cli-for-the-moon/), then [a favicon](https://garden.pcarleton.com/post/garden-fun/#emoji-favicon), and the most recently [a copy-pastable version](https://blog.pcarleton.com/post/current-phase-of-the-moon-emoji/) for [The Password Game](https://neal.fun/password-game/). It's a simple problem to get a passable answer which makes it a quick fun project in a new language or a new context. On the other hand, it's very complex to get an extremely accurate answer.
 

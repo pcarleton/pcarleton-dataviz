@@ -1,8 +1,8 @@
 ---
-title: Moon Phases Corrections competition
+title: Moon Phases Part 3, Corrections competition
 ---
 
-# Moon Phase Corrections Investigation
+# Moon Phases Part 3, Corrections competition
 In the last post, I got that the Astronomical Algorithms code working. That code starts from a similar (ish) model to the "anchor on a known new moon & extrapolate", but then it adds a bunch of periodic correction terms based on other factors that affect the moons position.
 
 While it's great that it gives me the correct answer, I'd like to understand more about _how_ it does that. I could try to wade through a bunch of papers, but they're not really tailored for a casual observer, so instead, I'll start by treating the correctinos as a kind of "black box", find what terms matter the most, focus on their inputs, and that should give me an idea of what influences the moon's position most.
