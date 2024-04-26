@@ -169,7 +169,7 @@ const violinData = Object.entries(g2023).map(([k, v]) => ({label: k, points: v.m
 display(violinPlot(violinData, {marks: [Plot.gridY({interval: 1, stroke: "#ddd", strokeOpacity: 0.5})]}))
 ```
 
-We see about ${tex`\pm 10\text{ hours}`} for term 0 and ${tex`\pm 4\text{ hours}`} for term 1.  We can also see that the sum of the other terms is ${tex`\pm 1\text{ hour}`}.  Interestingly, together, the top 2 terms extend to ${tex`\pm 13\text{ hours}`}, and all together, it looks pretty similar to just the top 2 terms.
+We see about ${tex`\pm 15c\text{ hours}`} for term 0 and ${tex`\pm 4\text{ hours}`} for term 1.  We can also see that the sum of the other terms is ${tex`\pm 1\text{ hour}`}.  Interestingly, together, the top 2 terms extend to ${tex`\pm 19\text{ hours}`}, and all together, it looks pretty similar to just the top 2 terms.
 
 We could have also gotten these numbers by peeling back our "black box" a little bit a looking at the coefficients on the correction terms.  Here are the top 2 terms:
 
